@@ -37,13 +37,13 @@ const OrdenCombo = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <div className="flex overflow-x-auto h-screen snap-mandatory snap-x">
+    <div className="flex overflow-x-auto h-screen h-[100dvh] snap-mandatory snap-x scrollbar bg-cream">
       {dataCombo && (
         <>
-          <div className="w-screen h-full flex-shrink-0 lg:w-2/3 relative snap-center">
+          <div id="panel-armar" className="w-screen h-full flex-shrink-0 lg:w-2/3 relative snap-center flex flex-col">
             <PrepareCombo dataCombo={dataCombo} />
           </div>
-          <div className="w-screen h-full flex-shrink-0 relative snap-center lg:w-1/3">
+          <div id="panel-combo" className="w-screen h-full flex-shrink-0 relative snap-center lg:w-1/3 panel flex flex-col">
             <AsideCombo />
           </div>
         </>

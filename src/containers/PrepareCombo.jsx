@@ -22,7 +22,8 @@ const PrepareCombo = ({ dataCombo }) => {
     ComboModal,
     comboToggleModal,
     passDataPreview,
-    pedidoEdit
+    pedidoEdit,
+    totalPreview,
   } = useQuisco();
   const [showComentario, setShowComentario] = useState(false)
   const [option, setOption] = useState([]);
@@ -59,12 +60,15 @@ const PrepareCombo = ({ dataCombo }) => {
   }, []);
   return (
     <>
-      <header className="h-[10%] bg-primary flex items-center justify-between w-full px-3">
-        <div className="w-1/3 md:w-1/2 md:text-left text-center">
-          <h3 className="text-white font-black text-xl">{producto.nombre}</h3>
+      <header className="topbar shrink-0 h-16 lg:h-[4.5rem] flex items-center justify-between w-full px-4 lg:px-6 gap-3 shadow-sm">
+        <div className="min-w-0 flex items-center gap-3">
+          <div className="min-w-0">
+            <p className="hidden sm:block text-xs font-semibold uppercase tracking-wider text-ink/60">Armando combo</p>
+            <h3 className="font-display text-xl lg:text-2xl font-semibold text-ink truncate">{producto.nombre}</h3>
+          </div>
         </div>
 
-        <div className=" w-2/3 md:w-1/2 flex items-center justify-center gap-4">
+        <div className="flex items-center justify-end gap-2 shrink-0">
           <Switch
             checked={stateEnvio}
             onChange={(e) => handleSetEnvio(e.target.checked)}
@@ -76,33 +80,57 @@ const PrepareCombo = ({ dataCombo }) => {
             viewPrice={Empaque}
           />
 
-          <MdOutlineAddToPhotos
+          <button
+            type="button"
+            title="Cantidad de combos"
             onClick={() => {
               comboToggleModal();
             }}
-            className={`text-4xl font-black cursor-pointer  ${
-              ComboModal ? "text-orange-200" : "text-white"
-            }`}
-          />
-          <BiSolidCommentEdit
+            className={`topbar-btn ${ComboModal ? "topbar-btn-active" : ""}`}
+          >
+            <MdOutlineAddToPhotos className="text-2xl" />
+          </button>
+          <button
+            type="button"
+            title="Agregar comentario"
             onClick={() => {
               setShowComentario(true);
             }}
-            className="text-4xl text-white font-black cursor-pointer"
-          />
+            className={`topbar-btn ${comentario ? "topbar-btn-active" : ""}`}
+          >
+            <BiSolidCommentEdit className="text-2xl" />
+          </button>
         </div>
       </header>
 
-      <section className="overflow-scroll h-[75%] scrollbar p-1">
-        <div className="p-5 overflow-y-scroll scrollbar grid gap-4 grid-cols-2 md:grid-cols-3 auto-rows-max">
+      <section className="overflow-y-auto flex-1 scrollbar">
+        <div className="px-4 lg:px-6 pt-5 pb-1 flex items-center gap-2">
+          <h2 className="section-title">{opcionActual?.nombre}</h2>
+        </div>
+        <div className="p-4 lg:p-6 pt-3 lg:pt-3 grid gap-3 sm:gap-4 lg:gap-5 grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 auto-rows-max">
           {option.map((producto) => (
             <DetailCombo key={producto.imagen} producto={producto} />
           ))}
         </div>
       </section>
 
-      <footer className="h-[15%] border-t-2 border-gray-900/5 flex items-center justify-center p-1 absolute bottom-0 left-0 right-0 overflow-hidden">
-      <div className={`grid gap-2 justify-center ${options.length === 3 ? 'grid-cols-3' : options.length === 4 ? 'grid-cols-4' : 'grid-cols-5'}`}>
+      <div className="lg:hidden shrink-0 px-3 pt-2 bg-cream">
+        <button
+          type="button"
+          onClick={() =>
+            document
+              .getElementById("panel-combo")
+              ?.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" })
+          }
+          className="btn-dark w-full justify-between px-5 py-3.5 rounded-2xl shadow-lift"
+        >
+          <span>Ver combo</span>
+          <span className="font-display text-lg">{formatearDinero(totalPreview)}</span>
+        </button>
+      </div>
+
+      <footer className="shrink-0 bg-white shadow-footer border-t border-line flex items-center justify-center px-3 py-3 overflow-x-auto scrollbar">
+      <div className={`grid gap-2 lg:gap-3 justify-center ${options.length === 3 ? 'grid-cols-3' : options.length === 4 ? 'grid-cols-4' : 'grid-cols-5'}`}>
           {options.map((option, index) => (
             <SelectionCombo
               opcionActual={opcionActual}
@@ -117,40 +145,48 @@ const PrepareCombo = ({ dataCombo }) => {
       <CustomModal isOpen={showComentario} onRequestClose={closeModal}>
         <form
           onSubmit={handleSubmit}
-          className="text-black flex w-full flex-col gap-5 items-center"
+          className="text-ink flex w-full flex-col gap-4"
         >
-          <label htmlFor="setComentario">Deja un Comentario...</label>
+          <div>
+            <label htmlFor="setComentario" className="section-title block">Comentario</label>
+            <p className="text-sm text-ink-muted">Instrucciones especiales para cocina.</p>
+          </div>
           <textarea
             id="setComentario"
             name="setComentario"
             value={comentario}
             onChange={(e) => setComentario(e.target.value)}
             required
-            className="block w-full px-2 py-2 mt-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 focus:ring focus:ring-orange-200"
+            rows={4}
+            placeholder="Ej: sin cebolla, salsa aparte..."
+            className="input resize-none"
           />
 
           <button
-            className="bg-black px-5 py-2 rounded uppercase font-bold text-white text-center w-full cursor-pointer"
+            className="btn-dark w-full"
             type="submit"
           >
-            Guardar Comentario
+            Guardar comentario
           </button>
         </form>
       </CustomModal>
 
       <CustomModal isOpen={ComboModal} onRequestClose={comboToggleModal}>
-        <div className="bg-white p-1 w-full flex flex-col items-center justify-center gap-5">
-        <h2 className="text-xl font-bold">
+        <div className="bg-white w-full flex flex-col items-center justify-center gap-6">
+        <div className="text-center">
+          <p className="text-xs font-bold uppercase tracking-wider text-ink-muted">Cantidad de combos</p>
+          <h2 className="section-title">
            {producto.nombre}
           </h2>
+        </div>
 
-          <div className="flex gap-4 text-3xl">
+          <div className="flex items-center gap-6">
             <ButtonRest onClick={handleDecrement} />
-            <p className="text-black">{cantidad}</p>
+            <p className="font-display text-5xl font-semibold text-ink min-w-[3ch] text-center">{cantidad}</p>
             <ButtonPlus onClick={handleIncrement} />
           </div>
           <div
-            className=" bg-[#F9AA00] text-white w-full p-3 uppercase font-bold text-center rounded-md cursor-pointer"
+            className="btn-primary w-full"
             onClick={() => {
               handleSetpreview(producto, cantidad, true, true);
               comboToggleModal();

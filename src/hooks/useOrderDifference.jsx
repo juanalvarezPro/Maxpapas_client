@@ -11,13 +11,13 @@ const useOrderDifference = (ordenTotal, coinsTotal) => {
 
     if (diff > 0) {
       setTextoEstado('Faltante');
-      setColorEstado('text-red-500');
+      setColorEstado('text-danger');
     } else if (diff < 0) {
       setTextoEstado('Devuelta');
-      setColorEstado('text-green-500');
+      setColorEstado('text-success');
     } else if (diff === 0) {
       setTextoEstado('Completado');
-      setColorEstado('text-blue-500');
+      setColorEstado('text-info');
     }
   }, [ordenTotal, coinsTotal]);
 

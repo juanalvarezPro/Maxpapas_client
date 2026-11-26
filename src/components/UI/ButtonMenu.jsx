@@ -6,7 +6,7 @@ const ButtonMenu = ({ onClick}) => {
     <MdMenuOpen
       size={40}
       onClick={onClick}
-      className="cursor-pointer bg-primary  text-4xl p-2 text-white rounded-md font-bold uppercase shadow-md text-center transform "
+      className="cursor-pointer bg-primary p-2 text-ink rounded-xl shadow-sm transition hover:bg-primary-400"
     />
   );
 };

@@ -4,12 +4,13 @@ const ButtonEdit = ({ onClick }) => {
   return (
     <button
       type="button"
-      className="cursor-pointer bg-sky-700 p-2 text-white rounded-md font-bold uppercase shadow-md text-center"
+      title="Editar"
+      className="icon-btn bg-info/10 text-info hover:bg-info hover:text-white"
       onClick={onClick}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="h-3 w-3"
+        className="h-4 w-4"
         viewBox="0 0 20 20"
         fill="currentColor"
       >

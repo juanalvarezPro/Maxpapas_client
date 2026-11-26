@@ -6,9 +6,11 @@ import { MenuProducto } from "../components/MenuProducto";
 import { ImUserPlus } from "react-icons/im";
 import Producto from "../components/Producto";
 import SearchBar from "../components/SearchBar";
-import { FaSearch } from "react-icons/fa";
 import CustomModal from "../components/UI/CustomModal";
 import ButtonAdminPanel from "../components/UI/ButtonAdminPanel";
+import HeroSlider from "../components/HeroSlider";
+import CategoriaBar from "../components/CategoriaBar";
+import { formatearDinero } from "../helpers";
 
 const ProductList = ({ products }) => {
   const {
@@ -17,8 +19,10 @@ const ProductList = ({ products }) => {
     nameCliente,
     setNameCliente,
     cleanCombo,
+    categoriaActual,
+    pedido,
+    total,
   } = useQuisco();
-  const [searchView, setSearchView] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const [showClient, setShowClient] = useState(false);
   const { user } = useAuth({ middleware: "auth" });
@@ -37,50 +41,64 @@ const ProductList = ({ products }) => {
     };
   }, []);
 
+  const limpiarBusqueda = () => handleChangeBusqueda({ target: { value: "" } });
+  const hayFiltro = Boolean(busqueda.trim()) || Boolean(categoriaActual?.id);
+
+  // En móvil, el pedido está a la derecha: lo traemos a la vista
+  const verPedido = () => {
+    document
+      .getElementById("panel-pedido")
+      ?.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+  };
+
   return (
     <>
-      <header className="h-[10%] bg-primary flex items-center justify-between w-full px-3">
-        <div className=" hidden md:block md:w-1/2 text-start">
-          {user?.admin ? (
-            <ButtonAdminPanel />
-          ) : (
-            <h3 className="text-white font-black text-xl">
-              ¡Max {user?.name}!
-            </h3>
-          )}
+      <header className="topbar shrink-0 h-16 lg:h-[4.5rem] flex items-center justify-between w-full px-4 lg:px-6 gap-3 shadow-sm">
+        <div className="flex items-center gap-3 min-w-0">
+          <img src="/img/logo.svg" alt="Max Papas" className="h-11 w-11 lg:h-12 lg:w-12 shrink-0 drop-shadow" />
+          <div className="hidden sm:block min-w-0">
+            {user?.admin ? (
+              <ButtonAdminPanel />
+            ) : (
+              <h3 className="font-display text-xl lg:text-2xl font-semibold text-ink truncate">
+                ¡Hola, {user?.name}!
+              </h3>
+            )}
+          </div>
         </div>
-        <div className="md:w-1/2 w-full flex items-center justify-end gap-4 text-white cursor-pointer">
-          <div
-            className="flex text-center items-center gap-4"
+        <div className="flex items-center justify-end gap-2 min-w-0">
+          <button
+            type="button"
+            className="topbar-btn px-3 sm:px-4 min-w-0"
             onClick={() => {
               setShowClient(true);
             }}
+            title="Cambiar nombre del cliente"
           >
-            <span className="text-2xl">{nameCliente}</span>
-            <ImUserPlus className="text-4xl font-black " />
-          </div>
+            <ImUserPlus className="text-lg shrink-0" />
+            <span className="text-base sm:text-lg font-bold truncate max-w-[8rem] sm:max-w-[12rem]">{nameCliente}</span>
+          </button>
 
-          <FaSearch
-            onClick={() => {
-              setSearchView(!searchView);
-            }}
-            className={`text-4xl font-black cursor-pointer  ${
-              searchView ? "text-orange-200" : "text-white"
-            }`}
-          />
-          <LuMenuSquare
+          <button
+            type="button"
+            title="Menú"
             onClick={() => setShowSidebar(!showSidebar)}
-            className={`text-4xl font-black cursor-pointer  ${
-              showSidebar ? "text-orange-200" : "text-white"
-            }`}
-          />
+            className={`topbar-btn shrink-0 ${showSidebar ? "topbar-btn-active" : ""}`}
+          >
+            <LuMenuSquare className="text-2xl" />
+          </button>
         </div>
         <div
-          className={`absolute top-0 right-0 h-full w-full z-50 bg-zinc-700/60 ${
+          className={`fixed lg:absolute inset-0 z-50 bg-ink/40 backdrop-blur-[2px] ${
             showSidebar ? "block" : "hidden"
           }`}
         >
-          <div className="bg-white z-[100] p-3 absolute top-20 md:top-12 right-2 aspect-square w-48 rounded-lg shadow-lg  flex flex-col items-center justify-center gap-5">
+          <div className="card z-[100] p-3 absolute top-[4.5rem] right-3 w-64 max-h-[75vh] overflow-y-auto scrollbar animate-fade-up text-ink">
+            {user?.admin && (
+              <div className="sm:hidden mb-3 pb-3 border-b border-line [&>div]:w-full [&>div]:bg-ink">
+                <ButtonAdminPanel />
+              </div>
+            )}
             <MenuProducto />
           </div>
           <div
@@ -91,27 +109,70 @@ const ProductList = ({ products }) => {
           ></div>
         </div>
       </header>
-      <div
-        className={`w-full bg-white z-40 absolute ${
-          searchView ? "block" : "hidden"
-        }`}
-      >
-        <SearchBar value={busqueda} changeInput={handleChangeBusqueda} />
-      </div>
 
-      <section className="overflow-scroll h-[90%] scrollbar p-1">
-        <div className="p-5 overflow-y-scroll scrollbar grid gap-4 grid-cols-2 md:grid-cols-3 auto-rows-max">
+      <section className="overflow-y-auto flex-1 scrollbar">
+        <div className="px-4 lg:px-6 pt-4 space-y-4">
+          {!hayFiltro && <HeroSlider />}
+
+          <div className="sticky top-0 z-30 -mx-4 lg:-mx-6 px-4 lg:px-6 pt-1 pb-3 bg-cream/95 backdrop-blur space-y-3">
+            <SearchBar value={busqueda} changeInput={handleChangeBusqueda} onClear={limpiarBusqueda} />
+            <CategoriaBar />
+          </div>
+
+          {hayFiltro && (
+            <p className="text-sm text-ink-muted">
+              {products.length} {products.length === 1 ? "resultado" : "resultados"}
+              {categoriaActual?.id ? (
+                <> en <span className="font-bold text-ink capitalize">{categoriaActual.nombre}</span></>
+              ) : null}
+              {busqueda.trim() ? (
+                <> para <span className="font-bold text-ink">“{busqueda.trim()}”</span></>
+              ) : null}
+            </p>
+          )}
+        </div>
+
+        <div className="p-4 lg:p-6 pt-1 lg:pt-1 pb-28 lg:pb-6 grid gap-3 sm:gap-4 lg:gap-5 grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 auto-rows-max">
           {products.map((producto) => (
             <Producto key={producto.imagen} producto={producto} />
           ))}
         </div>
+        {products.length === 0 && (
+          <div className="flex flex-col items-center justify-center pb-32 pt-8 text-center text-ink-muted px-6">
+            <img src="/img/Papas.webp" alt="" className="w-24 opacity-60 mix-blend-multiply" />
+            <p className="mt-3 font-bold text-ink">No encontramos productos</p>
+            <p className="text-sm">Prueba con otra palabra o categoría.</p>
+          </div>
+        )}
       </section>
+
+      {/* Barra inferior móvil: acceso rápido al pedido */}
+      <div className="lg:hidden absolute bottom-0 inset-x-0 z-40 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] bg-gradient-to-t from-cream via-cream/90 to-transparent">
+        <button
+          type="button"
+          onClick={verPedido}
+          className="btn-dark w-full justify-between px-5 py-4 rounded-2xl shadow-lift"
+        >
+          <span className="flex items-center gap-2">
+            <span className="grid place-items-center h-7 min-w-[1.75rem] px-1.5 rounded-full bg-primary text-ink text-sm">
+              {pedido.length}
+            </span>
+            Ver pedido
+          </span>
+          <span className="font-display text-lg">{formatearDinero(total)}</span>
+        </button>
+      </div>
+
       <CustomModal isOpen={showClient} onRequestClose={closeModal}>
         <form
           onSubmit={handleSubmit}
-          className="text-black flex w-full flex-col gap-5 items-center"
+          className="text-ink flex w-full flex-col gap-4"
         >
-          <label htmlFor="setNameCliente">Cambia el nombre del cliente</label>
+          <div>
+            <h2 className="section-title">Nombre del cliente</h2>
+            <p className="text-sm text-ink-muted">Así aparecerá en el ticket y en cocina.</p>
+          </div>
+          <label htmlFor="setNameCliente" className="sr-only">Cambia el nombre del cliente</label>
           <input
             type="text"
             id="setNameCliente"
@@ -119,15 +180,16 @@ const ProductList = ({ products }) => {
             value={nameCliente}
             onChange={(e) => setNameCliente(e.target.value)}
             required
-            className="block w-full px-2 py-2 mt-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 focus:ring focus:ring-orange-200"
+            autoFocus
+            className="input text-lg"
             maxLength={15}
           />
 
           <button
-            className=" bg-black px-5 py-2 rounded uppercase font-bold text-white text-center w-full cursor-pointer"
+            className="btn-dark w-full"
             type="submit"
           >
-            Guardar Nombre
+            Guardar nombre
           </button>
         </form>
       </CustomModal>

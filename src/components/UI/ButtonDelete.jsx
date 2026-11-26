@@ -4,12 +4,13 @@ const ButtonDelete = ({onClick}) => {
   return (
     <button
     type="button"
-    className="bg-red-700 p-2 text-white rounded-md font-bold uppercase shadow-md text-center"
+    title="Eliminar"
+    className="icon-btn bg-danger/10 text-danger hover:bg-danger hover:text-white"
     onClick={onClick}
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="h-3 w-3"
+      className="h-4 w-4"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"

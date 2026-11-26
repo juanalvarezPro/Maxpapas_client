@@ -42,56 +42,52 @@ export const CalculadoraBilletes = () => {
   };
 
   return (
-    <div className="max-w-5xl	 h-full  flex flex-col mx-auto">
-      <header className="w-full  grid gap-3 grid-cols-3 h-[10%] mb-6">
-        <div className=" flex h-full flex-col col-span-1 gap-3">
-          <ButtonTransfer pedidoId={id} />
+    <div className="max-w-5xl flex flex-col mx-auto gap-4">
+      <header className="grid gap-3 grid-cols-2 lg:grid-cols-3">
+        <div className="col-span-2 lg:col-span-1 rounded-3xl bg-ink text-white p-5 flex flex-col justify-center">
+          <p className="text-xs font-semibold uppercase tracking-wider text-white/60">Total pedido</p>
+          <h2 className="font-display text-4xl font-semibold text-primary">{formatearDinero(totalPedido)}</h2>
         </div>
 
-        <div className=" h-full flex flex-col col-span-1 justify-center items-center shadow rounded-md">
-          <h2 className="text-3xl font-bold">{formatearDinero(totalPedido)}</h2>
-
-          <pre>Total Pedido</pre>
-        </div>
-        <div className="flex flex-col gap-3   col-span-1 shadow rounded-md px-2">
-          <div className="flex w-full h-1/2 justify-center items-center">
-            <div className="w-2/5 text-left text-xl font-bold">Recibe</div>
-            <div
-              className={`w-3/5 text-right text-2xl font-bold ${colorEstado}`}
-            >
-              {formatearDinero(coinsTotal)}
-            </div>
+        <div className="card p-4 flex flex-col justify-center gap-1">
+          <div className="text-xs font-bold uppercase tracking-wider text-ink-muted">Recibe</div>
+          <div className={`font-display text-2xl font-semibold ${colorEstado}`}>
+            {formatearDinero(coinsTotal)}
           </div>
+        </div>
 
-          <div className={`flex w-full h-1/2 justify-center items-center`}>
-            <div className="w-2/5 text-left text-xl font-bold">
-              {textoEstado}
-            </div>
-            <div
-              className={`w-3/5  text-right  text-2xl font-bold text-blue-500 `}
-            >
-              {formatearDinero(diferencia)}
-            </div>
+        <div className="card p-4 flex flex-col justify-center gap-1">
+          <div className="text-xs font-bold uppercase tracking-wider text-ink-muted">
+            {textoEstado}
+          </div>
+          <div className="font-display text-2xl font-semibold text-info">
+            {formatearDinero(diferencia)}
           </div>
         </div>
       </header>
-      <main className="h-[80%] overflow-scroll  lg:overflow-hidden flex w-full justify-center mt-5 relative">
-        <div className="flex flex-row md:flex-col flex-wrap gap-4">
+
+      <div className="h-16">
+        <ButtonTransfer pedidoId={id} />
+      </div>
+
+      <main className="flex-1 min-h-0">
+        <p className="mb-2 text-xs font-bold uppercase tracking-wider text-ink-muted">Billetes y monedas recibidos</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {bills.map((bill) => (
             <BillsItem key={bill.id} bill={bill} />
           ))}
         </div>
       </main>
 
-      <footer className="w-full h-[10%] justify-center item-center">
+      <footer className="sticky bottom-0 z-20 -mx-4 sm:mx-0 px-4 sm:px-0 py-3 bg-cream border-t border-line sm:border-0">
         <form onSubmit={handleSubmit}>
           <div>
           <input
               type="submit"
               className={`${
-                comprobarPedido() ? "bg-black" : "bg-stone-400"
-              } px-5 py-4 rounded uppercase font-bold text-white text-center w-full cursor-pointer`}
-              value={comprobarPedido() ? "Pagar Pedido" : "Sin Canje"}
+                comprobarPedido() ? "btn-dark" : "btn-muted"
+              } w-full py-4 text-base uppercase tracking-wide`}
+              value={comprobarPedido() ? "Pagar pedido" : "Sin canje"}
               disabled={!comprobarPedido()}
             />
           </div>

@@ -14,13 +14,15 @@ export const CantidadCardProducto = ({ producto }) => {
   const quantityProduct = checkQuantityInProducto(producto)
   return (
     <div
-      className={`aspect-square ${
-        isProductInCart ? "bg-primary/60" : "bg-white"
-      } col-span-1 shadow rounded-md text-center relative overflow-hidden group transition duration-700 hover:border border-primary/35`}
+      className={`${
+        isProductInCart
+          ? "bg-primary-50 ring-2 ring-primary shadow-glow"
+          : "bg-white ring-1 ring-line/70 shadow-card hover:shadow-lift"
+      } rounded-2xl text-center relative overflow-hidden group transition duration-200 flex flex-col`}
     >
       <div
-        className={`absolute top-0 m-1 xl:m-3 left-0 ${
-          isProductInCart ? "block transition duration-700" : "hidden"
+        className={`absolute top-2 left-2 z-10 ${
+          isProductInCart ? "block animate-fade-up" : "hidden"
         } `}
       >
         <ButtonDelete onClick={()=>{
@@ -28,8 +30,8 @@ export const CantidadCardProducto = ({ producto }) => {
         }} />
       </div>
       <div
-        className={`absolute top-0 m-1 xl:m-3 right-0 ${
-          isProductInCart ? "block transition duration-700" : "hidden"
+        className={`absolute top-2 right-2 z-10 ${
+          isProductInCart ? "block animate-fade-up" : "hidden"
         } `}
       >
         <QuantityProducto
@@ -40,32 +42,31 @@ export const CantidadCardProducto = ({ producto }) => {
           Quantity={quantityProduct}
         />
       </div>
-      <div className="w-full h-2/5 lg:h-3/5">
+      <div className="w-full aspect-[4/3] p-3">
         <img
           decoding="async"
+          loading="lazy"
           width="100%"
           height="auto"
           alt={`imagen ${nombre}`}
-          className="w-full h-full object-contain"
+          className="w-full h-full object-contain mix-blend-multiply"
           src={`/img/${imagen}.webp`}
         />
       </div>
 
-      <div className="h-3/5 lg:h-2/5 font-bold text-basic md:text-xl flex items-center flex-col justify-center text-center group-hover:hidden transition duration-700">
-        <div className="h-full flex flex-col justify-center items-center text-xl">
-          <p>{nombre}</p>
-          <p>{formatearDinero(precio)}</p>
-        </div>
+      <div className="px-3 pt-2 pb-1 border-t border-line/70">
+        <p className="font-bold leading-tight text-ink text-sm sm:text-base lg:text-lg">{nombre}</p>
+        <p className="mt-0.5 font-display font-semibold text-primary-700">{formatearDinero(precio)}</p>
       </div>
 
-      <div className="h-3/5 lg:h-2/5  flex justify-center items-center w-full uppercase font-bold group-hover:block transition duration-700">
-        <div className="flex gap-4 w-full justify-center  text-2xl h-1/2 items-center">
+      <div className="flex flex-col gap-2 p-3 pt-2 mt-auto">
+        <div className="flex gap-4 w-full justify-center items-center">
           <ButtonRest onClick={handleDecrement} />
-          <p className="text-black">{cantidad}</p>
+          <p className="font-display text-2xl font-semibold text-ink min-w-[2ch]">{cantidad}</p>
           <ButtonPlus onClick={handleIncrement} />
         </div>
         <div
-          className={`h-1/2 bg-[#F9AA00] flex justify-center cursor-pointer items-center text-white w-full p-2 uppercase font-bold border-sm text-xl`}
+          className="btn-dark w-full py-2.5 text-sm uppercase tracking-wide"
           onClick={() => {
             handleSetpreview(producto, cantidad, false, false);
           }}

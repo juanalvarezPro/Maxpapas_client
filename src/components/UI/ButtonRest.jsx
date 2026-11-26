@@ -5,19 +5,21 @@ const ButtonRest = ({onClick}) => {
     <button
     type="button"
     onClick={onClick}
+    title="Restar"
+    className="grid place-items-center h-11 w-11 rounded-full bg-white text-ink ring-2 ring-line transition hover:ring-primary active:scale-90"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      strokeWidth={1.5}
+      strokeWidth={2.5}
       stroke="currentColor"
-      className="w-8 h-8"
+      className="w-5 h-5"
     >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+        d="M19 12H5"
       />
     </svg>
   </button>

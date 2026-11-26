@@ -19,11 +19,23 @@ export default function BandejaOrdenes() {
   );
 
   if (isLoading) return <Loading />;
-  if (error) return <p>Error al cargar datos</p>;
+  if (error) return <p className="card p-6 text-center font-semibold text-danger">Error al cargar datos</p>;
 
   return (
     <div>
-      <h1 className="text-4xl font-black mb-5 text-center">Órdenes Pendientes</h1>
+      <header className="mb-5 flex items-end justify-between gap-3">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wider text-ink-muted">Cocina</p>
+          <h1 className="font-display text-3xl sm:text-4xl font-semibold text-ink">Órdenes pendientes</h1>
+        </div>
+        <span className="tag bg-primary text-ink text-sm px-3 py-1">{data.data.data.length}</span>
+      </header>
+      {data.data.data.length === 0 && (
+        <div className="card flex flex-col items-center justify-center py-16 text-center">
+          <img src="/img/Papas.webp" alt="" className="w-20 opacity-60 mix-blend-multiply" />
+          <p className="mt-3 font-bold text-ink">No hay órdenes pendientes</p>
+        </div>
+      )}
       {data.data.data.map((pedido)=>(<ItemOrden key={pedido.id} pedido={pedido} />))}
     </div>
   );

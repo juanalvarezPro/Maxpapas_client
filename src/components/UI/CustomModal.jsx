@@ -3,7 +3,9 @@ import Modal from "react-modal";
 
 const customStyles = {
   overlay: {
-    backgroundColor: "rgba(0, 0, 0, 0.5)"
+    backgroundColor: "rgba(36, 27, 20, 0.45)",
+    backdropFilter: "blur(3px)",
+    zIndex: 1000,
   },
   content: {
     top: "50%",
@@ -13,8 +15,10 @@ const customStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     border: "none",
-    borderRadius: "8px",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)"
+    borderRadius: "1.5rem",
+    padding: "1.75rem",
+    width: "min(92vw, 26rem)",
+    boxShadow: "0 24px 48px rgba(36, 27, 20, 0.22)",
   }
 };
 
@@ -25,6 +29,7 @@ const CustomModal = ({ isOpen, onRequestClose, children }) => {
       onRequestClose={onRequestClose}
       style={customStyles}
       ariaHideApp={false}
+      closeTimeoutMS={150}
     >
       {children}
     </Modal>
