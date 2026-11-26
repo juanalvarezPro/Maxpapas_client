@@ -9,13 +9,16 @@ export default function Categoria({ categoria }) {
   return (
     <div
       className={`${
-        categoryActual ? "bg-[#ffcc5e9b]" : "bg-transparent"
-      } flex items-center gap-3  w-full px-3 py-2 hover:bg-[#ffcc5e32] cursor-pointer `}
+        categoryActual
+          ? "bg-primary text-ink font-bold"
+          : "text-ink-soft hover:bg-primary-50 hover:text-ink"
+      } flex items-center justify-between gap-3 w-full rounded-xl px-3 py-2.5 cursor-pointer transition`}
       onClick={() =>categoryActual ? setCategoriaActual({}): handleClickCategoria(id)}
     >
-      <div className="text-basic capitalize text-pretty tracking-wider cursor-pointer truncate" type="button">
+      <div className="capitalize font-semibold cursor-pointer truncate" type="button">
         {nombre}
       </div>
+      {categoryActual && <span className="text-xs font-bold">✕</span>}
     </div>
   );
 }

@@ -1,24 +1,165 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-    font-family: "Roboto", sans-serif;
-    
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-cream font-sans text-ink;
+  }
+
+  h1, h2, h3 {
+    @apply tracking-tight;
+  }
+
+  ::selection {
+    @apply bg-primary-200 text-ink;
+  }
 }
 
+@layer components {
+  /* ---------- Botones ---------- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-bold
+      transition duration-200 select-none cursor-pointer
+      active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100;
+  }
+  .btn-primary {
+    @apply btn bg-primary text-ink shadow-glow hover:bg-primary-400;
+  }
+  .btn-dark {
+    @apply btn bg-ink text-white hover:bg-ink/90;
+  }
+  .btn-muted {
+    @apply btn bg-line text-ink-muted shadow-none;
+  }
+  .btn-soft {
+    @apply btn bg-white text-ink ring-1 ring-line hover:bg-primary-50;
+  }
 
-.scrollbar{
-    scrollbar-width: none;
+  .icon-btn {
+    @apply inline-flex items-center justify-center rounded-lg h-8 w-8 transition
+      active:scale-95 cursor-pointer;
+  }
+
+  /* Botones grandes de la barra superior */
+  .topbar-btn {
+    @apply inline-flex items-center justify-center gap-2 h-12 min-w-[3rem] px-3 rounded-2xl
+      bg-white/40 text-ink transition hover:bg-white/70 active:scale-95 cursor-pointer;
+  }
+  .topbar-btn-active {
+    @apply bg-ink text-white hover:bg-ink;
+  }
+
+  /* ---------- Superficies ---------- */
+  .card {
+    @apply bg-white rounded-2xl shadow-card ring-1 ring-line/70;
+  }
+
+  .topbar {
+    @apply bg-gradient-to-r from-primary-500 to-primary-400 text-ink;
+  }
+
+  .panel {
+    @apply bg-white border-l border-line;
+  }
+
+  /* ---------- Formularios ---------- */
+  .input {
+    @apply block w-full rounded-xl border border-line bg-cream px-4 py-3 text-ink
+      placeholder:text-ink-muted transition
+      focus:outline-none focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/20;
+  }
+  .label {
+    @apply block text-sm font-semibold text-ink-soft mb-1.5;
+  }
+
+  /* ---------- Etiquetas ---------- */
+  .tag {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold;
+  }
+  .tag-llevar {
+    @apply tag bg-danger/10 text-danger;
+  }
+
+  .section-title {
+    @apply font-display text-xl font-semibold text-ink;
+  }
+
+  .detail-row {
+    @apply block leading-snug;
+  }
+  .detail-key {
+    @apply inline font-bold text-ink mr-1;
+  }
+  .detail-value {
+    @apply inline text-ink-soft;
+  }
 }
 
-.input-focus:focus{
-    outline: none;
-    border: none;
-    background: transparent;
+.scrollbar {
+  scrollbar-width: none;
+}
+.scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.input-focus:focus {
+  outline: none;
+  border: none;
+  background: transparent;
 }
 
 .gray-scale {
-    filter: grayscale(1);
+  filter: grayscale(1);
+}
+
+/* ---------- Modales (react-modal) ---------- */
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 180ms ease-out;
+}
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+}
+
+/* ---------- Datepicker ---------- */
+.react-datepicker-wrapper {
+  display: block;
+}
+.react-datepicker {
+  font-family: inherit !important;
+  border-color: #F1E6D6 !important;
+  border-radius: 1rem !important;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(36, 27, 20, 0.12);
+}
+.react-datepicker__header {
+  background: #FFF8E6 !important;
+  border-bottom-color: #F1E6D6 !important;
+}
+.react-datepicker__day--selected,
+.react-datepicker__day--in-range,
+.react-datepicker__day--in-selecting-range,
+.react-datepicker__day--keyboard-selected {
+  background: #F9AA00 !important;
+  color: #241B14 !important;
+  border-radius: 0.5rem !important;
+}
+
+/* ---------- Toasts ---------- */
+.Toastify__toast {
+  font-family: inherit;
+  border-radius: 1rem;
+}
+.Toastify__progress-bar--success {
+  background: #F9AA00;
 }

@@ -5,7 +5,8 @@ import { IoIosPrint } from "react-icons/io";
 const ButtonPrinter = ({ onClick}) => {
   return (
     <IoIosPrint
-      className="cursor-pointer bg-red-700  text-4xl p-2 text-white rounded-md font-bold uppercase shadow-md text-center transform "
+      title="Imprimir ticket"
+      className="cursor-pointer h-10 w-10 p-2 rounded-xl bg-white text-ink ring-1 ring-line shadow-sm transition hover:bg-ink hover:text-white active:scale-95"
       onClick={onClick}
     />
   );

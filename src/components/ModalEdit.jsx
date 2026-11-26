@@ -10,16 +10,19 @@ export const ModalEdit = () => {
 
   return (
     <>
-      <div className="bg-white mt-4 p-1 w-full flex flex-col items-center justify-center gap-5">
-        <h2 className="text-xl font-bold">{producto.nombre}</h2>
+      <div className="bg-white w-full flex flex-col items-center justify-center gap-6">
+        <div className="text-center">
+          <p className="text-xs font-bold uppercase tracking-wider text-ink-muted">Cantidad</p>
+          <h2 className="section-title">{producto.nombre}</h2>
+        </div>
 
-        <div className="flex gap-4 text-3xl">
+        <div className="flex items-center gap-6">
           <ButtonRest onClick={handleDecrement} />
-          <p className="text-black">{cantidad}</p>
+          <p className="font-display text-5xl font-semibold text-ink min-w-[3ch] text-center">{cantidad}</p>
           <ButtonPlus onClick={handleIncrement} />
         </div>
         <div
-          className=" bg-[#F9AA00] text-white w-full p-3 uppercase font-bold text-center rounded-md cursor-pointer"
+          className="btn-primary w-full"
           onClick={() => {
             handleSetpreview(producto, cantidad, false, true);
             editToggleModal();

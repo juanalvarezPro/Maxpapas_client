@@ -14,19 +14,19 @@ export const ProductoOrden = ({ producto }) => {
       : "";
   const comentario = pivot.comentario;
   return (
-    <div className="w-full flex bg-neutral-100 mt-3 p-2 text-sm relative">
-      <div className="w-4/5">
+    <div className="w-full flex gap-4 rounded-xl bg-cream ring-1 ring-line/70 mt-2 p-3 text-sm">
+      <div className="flex-1 min-w-0 space-y-1">
         <h1
-          className={`w-fit rounded-sm bg-red-700 text-white text-basic p-0.5 ${
-            pivot.envio ? "block" : "hidden"
+          className={`tag-llevar mb-1 ${
+            pivot.envio ? "inline-flex" : "hidden"
           }`}
         >
           Para llevar
         </h1>
-        <section className="flex w-full">
-          <h2 className="mx-1 font-bold">Combo:</h2>
-          <p>
-            {pivot.cantidad == 1 ? '': pivot.cantidad} <span>{nombre}</span>
+        <section className="detail-row">
+          <h2 className="detail-key">Combo:</h2>
+          <p className="detail-value">
+            {pivot.cantidad == 1 ? '': pivot.cantidad} <span className="font-semibold text-ink">{nombre}</span>
             <span className="mx-1">{papa}</span>
             {detalle.salsas.length > 0 && (
               <>
@@ -45,17 +45,17 @@ export const ProductoOrden = ({ producto }) => {
           </p>
         </section>
         {detalle.salsasAlas.length > 0 && (
-          <section className="w-full flex">
-            <h2 className="mx-1 font-bold">Alas:</h2>
-            <p>
+          <section className="detail-row">
+            <h2 className="detail-key">Alas:</h2>
+            <p className="detail-value">
               {formatter.format(detalle.salsasAlas.map((item) => item.nombre))}
             </p>
           </section>
         )}
         {detalle.bebidas.length > 0 && (
-          <section className="w-full flex">
-            <h2 className="mx-1 font-bold">Bebida:</h2>
-            <p>
+          <section className="detail-row">
+            <h2 className="detail-key">Bebida:</h2>
+            <p className="detail-value">
               {formatter.format(
                 detalle.bebidas.map(
                   (item) =>
@@ -66,9 +66,9 @@ export const ProductoOrden = ({ producto }) => {
           </section>
         )}
         {detalle.adiciones.length > 0 && (
-          <section className="w-full flex">
-            <h2 className="mx-1 font-bold">Adiciones:</h2>
-            <p>
+          <section className="detail-row">
+            <h2 className="detail-key">Adiciones:</h2>
+            <p className="detail-value">
               {formatter.format(
                 detalle.adiciones.map(
                   (item) => `${item.cantidad} ${item.nombre}`
@@ -78,14 +78,14 @@ export const ProductoOrden = ({ producto }) => {
           </section>
         )}
         {comentario !== null && (
-          <section className="w-full flex">
-            <h2 className="mx-1 font-bold">Comentario:</h2>
-            <p>{comentario}</p>
+          <section className="mt-2 rounded-lg bg-primary-50 px-2.5 py-1.5 text-xs">
+            <h2 className="inline font-bold text-primary-800">Comentario: </h2>
+            <p className="inline text-ink-soft">{comentario}</p>
           </section>
         )}
       </div>
 
-      <div className="w-1/ font-bold flex justify-center items-center">{formatearDinero(pivot.totalCombo)}</div>
+      <div className="shrink-0 font-display text-base font-semibold text-ink flex items-center">{formatearDinero(pivot.totalCombo)}</div>
     </div>
   );
 };

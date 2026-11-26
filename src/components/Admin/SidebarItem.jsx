@@ -11,23 +11,26 @@ export function SidebarItem({ icon, text, enlace }) {
         handleClickSideItem(text);
       }}
       className={`
-          relative flex items-center py-2 px-3 my-4
-          font-medium  rounded-md cursor-pointer
+          relative flex flex-col items-center justify-center gap-1 flex-1 md:flex-none md:w-full
+          py-2 md:py-3 px-2 rounded-xl cursor-pointer
+          text-[11px] font-semibold
           transition-colors group
           ${
             active === text
-              ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
-              : "hover:bg-indigo-50 text-gray-600"
+              ? "bg-primary text-ink"
+              : "text-white/60 hover:bg-white/10 hover:text-white"
           }
       `}
     >
       {icon}
+      <span className="md:hidden">{text}</span>
 
       {!expanded && (
         <div
           className={`
-            absolute left-full rounded-md px-2 py-1 ml-6
-            bg-indigo-100 text-indigo-800 text-sm
+            hidden md:block
+            absolute left-full rounded-lg px-2.5 py-1 ml-4 whitespace-nowrap
+            bg-ink text-white text-sm font-semibold shadow-lift
             invisible opacity-20 -translate-x-3 transition-all
             z-[10000]
             group-hover:visible group-hover:opacity-100 group-hover:translate-x-0

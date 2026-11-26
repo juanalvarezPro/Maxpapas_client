@@ -6,22 +6,22 @@ import { AiFillDashboard } from "react-icons/ai";
 
 const SideItem = [
   {
-    icon: <IoFileTrayFull size={25} />,
+    icon: <IoFileTrayFull size={22} />,
     text: "Recibidos",
     enlace: "/admin",
   },
   {
-    icon: <MdStickyNote2 size={25} />,
+    icon: <MdStickyNote2 size={22} />,
     text: "Pedidos",
     enlace: "/admin/pedidos",
   },
   {
-    icon: <IoFastFoodSharp size={25} />,
+    icon: <IoFastFoodSharp size={22} />,
     text: "Productos",
     enlace: "/admin/productos",
   },
   {
-    icon: <AiFillDashboard size={25} />,
+    icon: <AiFillDashboard size={22} />,
     text: "Dashboard",
     enlace: "/admin/dashboard",
   },

@@ -50,20 +50,36 @@ const columns = [
 ];
 
 const customStyles = {
+  table: {
+    style: {
+      backgroundColor: "transparent",
+    },
+  },
   headRow: {
     style: {
       border: "none",
+      backgroundColor: "#FFF8E6",
+      borderRadius: "0.75rem",
+      minHeight: "44px",
     },
   },
   headCells: {
     style: {
-      color: "#202124",
-      fontSize: "1rem",
+      color: "#5E5147",
+      fontSize: "0.8rem",
+      fontWeight: 700,
+      textTransform: "uppercase",
+      letterSpacing: "0.04em",
     },
   },
   rows: {
+    style: {
+      fontSize: "0.95rem",
+      color: "#241B14",
+      minHeight: "56px",
+    },
     highlightOnHoverStyle: {
-      backgroundColor: "rgb(238, 242 ,255)",
+      backgroundColor: "#FFF8E6",
       borderBottomColor: "#FFFFFF",
       outline: "1px solid #FFFFFF",
     },
@@ -114,8 +130,8 @@ export const Ordenes = () => {
     refreshInterval: 1000,
   });
 
-  if (isLoading) return;
-  if (error) return <p>Error al cargar datos</p>;
+  if (isLoading) return <p className="p-6 text-center font-semibold text-ink-muted">Cargando...</p>;
+  if (error) return <p className="card p-6 text-center font-semibold text-danger">Error al cargar datos</p>;
 
   // Funciones para cambiar la página y actualizar la URL
   const handleNextPage = () => {
@@ -136,12 +152,14 @@ export const Ordenes = () => {
 
   return (
     <div className="relative">
-       <div className="bg-green-200 p-2 mb-2 rounded flex font-bold  text-3xl justify-center gap-7 sticky">
-        <h2 className="font-bold">Total Pedidos:</h2>
-        <p className=" font-semibold">{formatearDinero(data.data.total)}</p>
+      <p className="text-xs font-bold uppercase tracking-wider text-ink-muted">Historial</p>
+      <h1 className="font-display text-3xl sm:text-4xl font-semibold text-ink mb-5">Pedidos</h1>
+       <div className="rounded-3xl bg-ink text-white p-5 sm:p-6 mb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-white/60">Total pedidos</h2>
+        <p className="font-display text-3xl sm:text-4xl font-semibold text-primary">{formatearDinero(data.data.total)}</p>
       </div>
       <div>
-        <div className="flex justify-center mb-5">
+        <div className="card p-4 mb-5 grid grid-cols-2 sm:flex sm:items-end gap-3">
           <DatePicker
             selected={startDate}
             onChange={(date) => setStartDate(date)}
@@ -149,7 +167,7 @@ export const Ordenes = () => {
             startDate={startDate}
             endDate={endDate}
             placeholderText="Fecha de inicio"
-            className="px-4 py-2 border rounded"
+            className="input py-2.5"
           />
           <DatePicker
             selected={endDate}
@@ -159,17 +177,18 @@ export const Ordenes = () => {
             endDate={endDate}
             minDate={startDate}
             placeholderText="Fecha de fin"
-            className="px-4 py-2 border rounded ml-2"
+            className="input py-2.5"
           />
           <button
             onClick={handleFilter}
-            className="bg-blue-500 text-white px-4 py-2 rounded ml-4"
+            className="btn-primary col-span-2 py-2.5 shadow-none"
           >
             Filtrar
           </button>
         </div>
       </div>
 
+      <div className="card overflow-hidden p-2">
       <DataTable
         columns={columns}
         data={data.data.data.data}
@@ -178,21 +197,22 @@ export const Ordenes = () => {
         highlightOnHover
         pointerOnHover
       />
-      <div className="flex justify-between mt-4">
+      </div>
+      <div className="flex items-center justify-between gap-3 mt-4 pb-4">
         <button
           onClick={handlePrevPage}
           disabled={data.data.data.current_page === 1}
-          className="bg-gray-200 px-4 py-2 rounded disabled:opacity-50"
+          className="btn-soft py-2.5"
         >
           Anterior
         </button>
-        <span>
+        <span className="text-sm font-semibold text-ink-soft text-center">
           Página {data.data.data.current_page} de {data.data.data.last_page}
         </span>
         <button
           onClick={handleNextPage}
           disabled={data.data.data.current_page === data.data.data.last_page}
-          className="bg-gray-200 px-4 py-2 rounded disabled:opacity-50"
+          className="btn-soft py-2.5"
         >
           Siguiente
         </button>

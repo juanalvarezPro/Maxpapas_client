@@ -6,6 +6,14 @@ import ProductList from "../containers/ProductList";
 import CustomModal from "../components/UI/CustomModal";
 import ModalQuick from "../components/ModalQuick";
 
+// Ignora mayúsculas y tildes: "salchipapa" encuentra "Salchipapá"
+const normalizarTexto = (texto = "") =>
+  texto
+    .toString()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "");
+
 export default function Inicio() {
   useAuth({ middleware: "auth" });
   const {
@@ -25,9 +33,10 @@ export default function Inicio() {
         (producto) => producto.categoria_id === categoriaActual.id
       );
     }
-    if (busqueda) {
-      productos = listProductos.filter((producto) =>
-        producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
+    if (busqueda.trim()) {
+      const termino = normalizarTexto(busqueda.trim());
+      productos = productos.filter((producto) =>
+        normalizarTexto(producto.nombre).includes(termino)
       );
     }
 
@@ -36,15 +45,15 @@ export default function Inicio() {
 
   useEffect(() => {
     applyFilters();
-  }, [categoriaActual, busqueda, handleClickCategoria]);
+  }, [categoriaActual, busqueda, listProductos]);
 
 
   return (
-    <div className="flex overflow-x-auto  h-screen snap-mandatory snap-x ">
-      <div className="w-screen h-full flex-shrink-0 lg:w-3/5  xl:w-2/3 relative snap-center">
+    <div className="flex overflow-x-auto h-screen h-[100dvh] snap-mandatory snap-x scrollbar bg-cream">
+      <div id="panel-productos" className="w-screen h-full flex-shrink-0 lg:w-3/5 xl:w-2/3 relative snap-center flex flex-col">
         <ProductList products={filterProduct} />
       </div>
-      <div className="w-screen h-full flex-shrink-0 relative snap-center  lg:w-2/5 xl:w-1/3">
+      <div id="panel-pedido" className="w-screen h-full flex-shrink-0 relative snap-center lg:w-2/5 xl:w-1/3 panel flex flex-col">
         <AsidePedido />
       </div>
       <CustomModal isOpen={quickModal} onRequestClose={quickToggleModal}>

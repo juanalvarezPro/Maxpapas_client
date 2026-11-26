@@ -5,19 +5,19 @@ export default function ResumenCombos({ producto, Eliminar, Editar }) {
   const { stateEnvio, combo, detalles, total, uuid, comentario } = producto;
 
   return (
-    <div className="flex w-full bg-neutral-100 mb-5 p-2 text-sm relative">
-      <div className="w-[85%]">
+    <div className="card flex w-full mb-3 p-3.5 text-sm gap-3 animate-fade-up">
+      <div className="flex-1 min-w-0 space-y-1">
         <h1
-          className={`w-fit rounded-sm bg-red-700 text-white text-basic p-0.5 ${
-            stateEnvio ? "block" : "hidden"
+          className={`tag-llevar mb-1 ${
+            stateEnvio ? "inline-flex" : "hidden"
           }`}
         >
           Para llevar
         </h1>
         {combo.length > 0 && (
-          <section className="flex w-full">
-            <h2 className="mx-1 font-bold">Combo:</h2>
-            <p>
+          <section className="detail-row">
+            <h2 className="detail-key">Combo:</h2>
+            <p className="detail-value">
               {formatter.format(
                 combo.map(
                   (item) =>
@@ -51,9 +51,9 @@ export default function ResumenCombos({ producto, Eliminar, Editar }) {
           </section>
         )}{" "}
         {detalles.salsasAlas.length > 0 && (
-          <section className="w-full flex">
-            <h2 className="mx-1 font-bold">Alas:</h2>
-            <p>
+          <section className="detail-row">
+            <h2 className="detail-key">Alas:</h2>
+            <p className="detail-value">
               {formatter.format(
                 detalles.salsasAlas.map(
                   (item) =>
@@ -64,9 +64,9 @@ export default function ResumenCombos({ producto, Eliminar, Editar }) {
           </section>
         )}
         {detalles.bebidas.length > 0 && (
-          <section className="w-full flex">
-            <h2 className="mx-1 font-bold">Bebida:</h2>
-            <p>
+          <section className="detail-row">
+            <h2 className="detail-key">Bebida:</h2>
+            <p className="detail-value">
               {formatter.format(
                 detalles.bebidas.map(
                   (item) =>
@@ -77,9 +77,9 @@ export default function ResumenCombos({ producto, Eliminar, Editar }) {
           </section>
         )}
         {detalles.adiciones.length > 0 && (
-          <section className="w-full flex">
-            <h2 className="mx-1 font-bold">Adiciones:</h2>
-            <p>
+          <section className="detail-row">
+            <h2 className="detail-key">Adiciones:</h2>
+            <p className="detail-value">
               {formatter.format(
                 detalles.adiciones.map(
                   (item) => `${item.cantidad} ${item.nombre}`
@@ -89,15 +89,14 @@ export default function ResumenCombos({ producto, Eliminar, Editar }) {
           </section>
         )}
         {comentario !== "" && (
-          <section className="w-full flex">
-            <h2 className="mx-1 font-bold">Comentario:</h2>
-            <p>{comentario}</p>
+          <section className="mt-2 rounded-lg bg-primary-50 px-2.5 py-1.5 text-xs">
+            <h2 className="inline font-bold text-primary-800">Comentario: </h2>
+            <p className="inline text-ink-soft">{comentario}</p>
           </section>
         )}
       </div>
-      <div className="w-[15%] flex flex-col items-center justify-center text-center ">
-        <div className="h-full flex flex-col gap-4 justify-center">
-        <div className="flex gap-2 justify-end">
+      <div className="flex flex-col items-end justify-between gap-3 shrink-0">
+        <div className="flex gap-1.5 justify-end">
           <ButtonDelete
             onClick={() => {
               Eliminar(uuid);
@@ -109,9 +108,7 @@ export default function ResumenCombos({ producto, Eliminar, Editar }) {
             }}
           />
         </div>
-        <h2 className="text-xs font-bold">{formatearDinero(total)}</h2>
-        </div>
-
+        <h2 className="font-display text-base font-semibold text-ink whitespace-nowrap">{formatearDinero(total)}</h2>
       </div>
     </div>
   );

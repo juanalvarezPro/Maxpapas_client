@@ -6,9 +6,12 @@ const ButtonPayOrden = ({ onClick }) => {
   return (
     <Link to={'/admin/calculadora-billetes'} onClick={onClick}>
     <div
-      className=" bg-sky-700  hover:bg-sky-900  px-5 py-2 rounded uppercase font-bold text-white text-center  cursor-pointer"
+      className="btn-primary py-2.5 text-sm shadow-none"
       
-    > Pagar Pedido</div>
+    >
+      <FaCalculator />
+      Pagar pedido
+    </div>
     </Link>
     
   );
